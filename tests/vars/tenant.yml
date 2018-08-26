@@ -1,0 +1,28 @@
+---
+elb:
+  ansible-elb02:
+    elb_type: "External"
+    elb_bandwidth: 100
+    admin_state_up: true
+    elb_availability_zone: "eu_de-01"
+    elb_secgroup_name: "ansible-secgroup01"
+    elb_subnet_name: "ansible-subnet01"
+    elb_vpc_name: "ansible-vpc01"
+elblistener:
+  ansible-listener02:
+    listener_protocol: "HTTP"
+    listener_port: 443
+    listener_backend_protocol: "HTTP"
+    listener_backend_port: 80
+    listener_lb_algorithm: "source"
+    listener_certificate_name: "Ansible"
+    listener_sticky_session_type: "insert"
+    listener_tcp_timeout: 30
+    listener_session_sticky: false
+    listener_cookie_timeout: 60
+    healthcheck_connect_port: 80
+    healthcheck_interval: 5
+    healthcheck_protocol: "TCP"
+    healthcheck_timeout: 10
+    unhealthy_threshold: 3
+    backend_members: "ansible-test01,ansible-test02"
