@@ -18,7 +18,7 @@
   register: elblistner
   retries: "{{ uri_retries }}"
   delay: "{{ uri_delay }}"
-  until: elblistener.status == 200
+  until: elblistner.status == 200
   when:
     - elb_id is defined
     - listener_name is defined
