@@ -86,7 +86,7 @@
   set_fact:
     listener_certificate_id: "{{ (listener_certificate_result.content|from_json)|json_query(\"certificates[?name=='\" + listener_certificate_name + \"'].id|[0]\") }}"
   when:
-    - listener_certificate_name is defined
+    - listener_name is defined and listener_certificate_name is defined
 
 - name: Send Request to API (list elb listener)
   uri:
