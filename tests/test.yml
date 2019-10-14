@@ -23,6 +23,7 @@
     listener_cookie_timeout: "{{ elblistener[listener_name].listener_cookie_timeout | default('') }}"
     listener_sticky_session_type: "{{ elblistener[listener_name].listener_sticky_session_type | default('') }}"
     listener_session_sticky: "{{ elblistener[listener_name].listener_session_sticky | default('') }}"
+    listener_http2_enable: "{{ elblistener[listener_name].http2_enable }}"
     # ELB healthcheck vars
     healthcheck_connect_port: "{{ elblistener[listener_name].healthcheck_connect_port }}"
     healthcheck_interval: "{{ elblistener[listener_name].healthcheck_interval | default(0) }}"
@@ -32,6 +33,12 @@
     unhealthy_threshold: "{{ elblistener[listener_name].unhealthy_threshold | default(0) }}"
     # ELB backend member vars
     backend_members: "{{ elblistener[listener_name].backend_members | default('') }}"
+    # ELB pool vars 
+    pool_protocol: "{{ elbpools[pool_name].pool_protocol | default('') }}"
+    pool_lb_algorithm: "{{ elbpools[pool_name].pool_lb_algorithm | default('') }}"
+    pool_session_cookie_name: "{{ elbpools[pool_name].pool_session_cookie_name | default('') }}"
+    pool_session_persistence_timeout: "{{ elbpools[pool_name].pool_session_persistence_timeout | default('') }}"
+    pool_session_type: "{{ elbpools[pool_name].pool_session_type | default('') }}"
 
   roles:
     - role: "otc_auth"

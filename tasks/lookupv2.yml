@@ -1,6 +1,6 @@
 - name: Send request to API (list elb)
   uri:
-    url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/loadbalancers"
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/loadbalancers"
     method: GET
     return_content: yes
     follow_redirects: "{{ uri_follow_redirects }}"
@@ -91,7 +91,7 @@
 
 - name: Send Request to API (list elb listener)
   uri:
-    url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/listeners?loadbalancer_id={{ elb_id}}"
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/listeners"
     method: GET
     return_content: yes
     follow_redirects: "{{ uri_follow_redirects }}"
@@ -104,16 +104,16 @@
   delay: "{{ uri_delay }}"
   until: listener_result.status == 200
   changed_when: false
-  when: elb_id is defined
 
 - name: Set fact listener_id for elb if listener_name is defined
   set_fact:
-    listener_id: "{{ (listener_result.content|from_json)|json_query(\"[?name=='\" + listener_name + \"'].id|[0]\") }}"
+    listener_id: "{{ (listener_result.content|from_json)|json_query(\"listeners[?name=='\" + listener_name + \"'].id|[0]\") }}"
+#    listener_id: "{{ (listener_result.content|from_json)|json_query(\"listeners[].loadbalancers[?id=='\" + elb_id + \"'].id[]|[0]\") }}"
   when: listener_name is defined
 
-- name: Send Request to API (show elb listener details)
+- name: Send Request to API (list elb pools)
   uri:
-    url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/listeners/{{ listener_id}}"
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/pools"
     method: GET
     return_content: yes
     follow_redirects: "{{ uri_follow_redirects }}"
@@ -121,16 +121,37 @@
     headers:
       Content-Type: "application/json"
       X-Auth-Token: "{{ token['x_subject_token'] }}"
-  register: listenerdetail_result
+  register: pool_result
   retries: "{{ uri_retries }}"
   delay: "{{ uri_delay }}"
-  until: listenerdetail_result.status == 200
+  until: pool_result.status == 200
   changed_when: false
-  when: listener_id is defined and listener_id|length != 0
 
-- name: Set fact healthcheck_id for elb listener
+- name: Set fact pool_id for elb if pool_name is defined
   set_fact:
-    healthcheck_id: "{{ (listenerdetail_result.content|from_json)|json_query('healthcheck_id') }}"
-  when:
-    - listenerdetail_result is defined
-    - listener_id is defined and listener_id|length != 0
+    pool_id: "{{ (pool_result.content|from_json)|json_query(\"pools[?name=='\" + pool_name + \"'].id|[0]\") }}"
+  when: pool_name is defined
+
+# - name: Send Request to API (show elb listener details)
+#   uri:
+#     url: "{{ AUTH_URL_ELBv2 }}/lbaas/listeners/{{ listener_id}}"
+#     method: GET
+#     return_content: yes
+#     follow_redirects: "{{ uri_follow_redirects }}"
+#     validate_certs: "{{ uri_validate_certs }}"
+#     headers:
+#       Content-Type: "application/json"
+#       X-Auth-Token: "{{ token['x_subject_token'] }}"
+#   register: listenerdetail_result
+#   retries: "{{ uri_retries }}"
+#   delay: "{{ uri_delay }}"
+#   until: listenerdetail_result.status == 200
+#   changed_when: false
+#   when: listener_id is defined and listener_id|length != 0
+# 
+# - name: Set fact healthcheck_id for elb listener
+#   set_fact:
+#     healthcheck_id: "{{ (listenerdetail_result.content|from_json)|json_query('healthcheck_id') }}"
+#   when:
+#     - listenerdetail_result is defined
+#     - listener_id is defined and listener_id|length != 0

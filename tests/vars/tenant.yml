@@ -8,6 +8,10 @@ elb:
     elb_secgroup_name: "ansible-secgroup01"
     elb_subnet_name: "ansible-subnet01"
     elb_vpc_name: "ansible-vpc01"
+  ansible-elb05:
+    elb_vpc_name: "ansible-vpc01"
+    elb_subnet_name: "ansible-subnet01"
+    admin_state_up: true
 elblistener:
   ansible-listener02:
     listener_protocol: "HTTP"
@@ -26,3 +30,11 @@ elblistener:
     healthcheck_timeout: 10
     unhealthy_threshold: 3
     backend_members: "ansible-test01,ansible-test02"
+  ansible-listener05:
+    listener_protocol: "TCP"
+    listener_port: 80
+    http2_enable: false
+elbpools:
+  ansible-pool05:
+    pool_protocol: "TCP"
+    pool_lb_algorithm: "ROUND_ROBIN"

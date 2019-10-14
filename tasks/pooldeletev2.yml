@@ -1,0 +1,22 @@
+- name: Lookup listener_id
+  include: lookupv2.yml
+
+- name: Send request to API
+  uri:
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/pools/{{ pool_id }}"
+    method: DELETE
+    return_content: yes
+    status_code: 200,201,202,203,204
+    follow_redirects: "{{ uri_follow_redirects }}"
+    validate_certs: "{{ uri_validate_certs }}"
+    headers:
+      Content-Type: "application/json"
+      X-Auth-Token: "{{ token['x_subject_token'] }}"
+  register: elbpool
+  retries: "{{ uri_retries }}"
+  delay: "{{ uri_delay }}"
+  until: elbpool.status == 200 or elbpool.status == 201 or elbpool.status == 203 or elbpool.status == 204
+  changed_when: false
+
+- debug:
+    msg: "{{ elbpool }}"

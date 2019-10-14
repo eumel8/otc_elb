@@ -1,0 +1,11 @@
+{ "loadbalancer": {
+    "name": "{{ elb_name }}",
+    "description": "Ansible generated resource",
+    "tenant_id": "{{ PROJECT_ID }}",
+    "vip_subnet_id": "{{ neutron_subnet_id }}",
+{% if elb_ipaddress is defined %}  
+    "vip_address": "{{ elb_ipaddress }}",
+{% endif %}  
+    "admin_state_up": {{ admin_state_up }}
+  }
+}

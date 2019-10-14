@@ -4,3 +4,6 @@ uri_validate_certs: "yes"
 uri_retries: 5
 uri_delay: 1
 waitfor: False
+
+cascade: True
+http2_enable: False

@@ -1,0 +1,23 @@
+{ 
+  "listener": { 
+    "name": "{{ listener_name }}",
+    "description": "Ansible generated resource",
+    "loadbalancer_id": "{{ elb_id }}",
+    "tenant_id": "{{ PROJECT_ID }}",
+    "protocol": "{{ listener_protocol }}",
+    "protocol_port": {{ listener_port }},
+{% if pool_id is defined and pool_id|length != 0 %}  
+    "default_pool_id": "{{ pool_id }}",
+{% endif %}  
+{% if listener_certificate_id is defined and listener_certificate_id|length != 0 %}  
+    "default_tls_container_ref": "{{ listener_certificate_id }}",
+{% endif %}  
+{% if listener_certificate_ca_id is defined and listener_certificate_ca_id|length != 0 %}  
+    "client_ca_tls_container_ref": "{{ listener_certificate_ca_id }}",
+{% endif %}  
+{% if listener_certificate_sni_id is defined and listener_certificate_sni_id|length != 0 %}  
+    "sni_container_refs": "[ {{ listener_certificate_sni_id }} ]",
+{% endif %}  
+    "http2_enable": "{{ listener_http2_enable }}"
+  }
+}

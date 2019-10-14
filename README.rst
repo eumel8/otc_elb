@@ -1,7 +1,12 @@
 otc_elb
 =======
 
-OTC role for Elastic Load Balancer (ELB).
+OTC role for Elastic Load Balancer (ELB). There are 2 types of services:
+
+* Classic Loadbalancers (V1)
+* Enhanced Loadbalancers (V2)
+
+There are different API endpoints and differend functionalities. V1 has an asynchron job workflow. V2 works without jobs directly.
 
 Variables:
 ^^^^^^^^^^
@@ -11,13 +16,23 @@ Variables:
 +====================================+===============================================================+
 | localaction="list"                 | List ELB                                                      |
 +------------------------------------+---------------------------------------------------------------+
+| localaction="listv2"               | List ELB V2                                                   |
++------------------------------------+---------------------------------------------------------------+
 | localaction="create"               | Create ELB                                                    |
++------------------------------------+---------------------------------------------------------------+
+| localaction="createv2"             | Create ELB V2                                                 |
 +------------------------------------+---------------------------------------------------------------+
 | localaction="show"                 | Show ELB resources                                            |
 +------------------------------------+---------------------------------------------------------------+
+| localaction="showv2"               | Show ELB resources V2                                         |
++------------------------------------+---------------------------------------------------------------+
 | localaction="listenercreate"       | Create ELB Listener                                           |
 +------------------------------------+---------------------------------------------------------------+
+| localaction="listenercreatev2"     | Create ELB Listener V2                                        |
++------------------------------------+---------------------------------------------------------------+
 | localaction="listenershow"         | Show ELB Listener resources                                   |
++------------------------------------+---------------------------------------------------------------+
+| localaction="poolcreatev2"         | Create ELB Backend Pool V2                                    |
 +------------------------------------+---------------------------------------------------------------+
 | localaction="healthcheckcreate"    | Create ELB Healthcheck                                        |
 +------------------------------------+---------------------------------------------------------------+
@@ -29,7 +44,13 @@ Variables:
 +------------------------------------+---------------------------------------------------------------+
 | localaction="delete"               | Delete ELB                                                    |
 +------------------------------------+---------------------------------------------------------------+
+| localaction="deletev2"             | Delete ELB V2                                                 |
++------------------------------------+---------------------------------------------------------------+
 | localaction="listenerdelete"       | Delete ELB Listener                                           |
++------------------------------------+---------------------------------------------------------------+
+| localaction="listenerdeletev2"     | Delete ELB Listener V2                                        |
++------------------------------------+---------------------------------------------------------------+
+| localaction="pooldeletev2"         | Delete ELB Backend Pool V2                                    |
 +------------------------------------+---------------------------------------------------------------+
 | localaction="healthcheckdelete"    | Delete ELB Healthcheck                                        |
 +------------------------------------+---------------------------------------------------------------+
@@ -53,11 +74,14 @@ Variables:
 +------------------------------------+---------------------------------------------------------------+
 | elb_subnet_name                    | Subnet of ELB                                                 |
 +------------------------------------+---------------------------------------------------------------+
+| elb_ipaddress                      | IP-Address of ELB (V2)                                        |
++------------------------------------+---------------------------------------------------------------+
 | elb_vpc_name                       | VPC of ELB                                                    |
 +------------------------------------+---------------------------------------------------------------+
-| listener_protocol                  | Listener protocol (HTTP, HTTPS, TCP)                          |
+| listener_protocol                  | Listener protocol                                             |
+|                                    | V1: HTTP, HTTPS, TCP V2: TCP, HTTP, UDP, TERMINATED_HTTPS     |
 +------------------------------------+---------------------------------------------------------------+
-| listener_port                      | Listener Port                                                 |
+| listener_port                      | Listener Port (1-65535, UDP not 4789)                         |
 +------------------------------------+---------------------------------------------------------------+
 | listener_backend_protocol          | Listener Backend Protocol (HTTP, HTTPS, TCP)                  |
 +------------------------------------+---------------------------------------------------------------+
@@ -66,6 +90,10 @@ Variables:
 | listener_lb_algorithm              | Listener Algorithm (source,  roundrobin, leastconn)           |
 +------------------------------------+---------------------------------------------------------------+
 | listener_certificate_name          | Listener SSL Certificate Name                                 |
++------------------------------------+---------------------------------------------------------------+
+| listener_certificate_ca_name       | Listener SSL CA Certificate Name (V2)                         |
++------------------------------------+---------------------------------------------------------------+
+| listener_certificate_sni_name      | Listener SSL Certificate Name (V2)                            |
 +------------------------------------+---------------------------------------------------------------+
 | listener_tcp_timeout               | Listener TCP timeout                                          |
 +------------------------------------+---------------------------------------------------------------+
@@ -91,6 +119,10 @@ Variables:
 +------------------------------------+---------------------------------------------------------------+
 | waitfor                            | Wait for Creating/Deleting Job finished (True or False)       |
 +------------------------------------+---------------------------------------------------------------+
+| cascade                            | Delete ELB cascade (True or False)                            |
++------------------------------------+---------------------------------------------------------------+
+| http2_enable                       | Enable HTTP2 in TERMINATED_HTTPS (True or False)              |
++------------------------------------+---------------------------------------------------------------+
 
 Functions:
 ^^^^^^^^^^
@@ -107,6 +139,11 @@ Create::
 
     ./grole otc_elb; ansible-playbook roles.yml -e "localaction=certificatecreate" -e "elb_certificate_name=ansible-cert01" -e "elb_certificate_certificate_file=cert.pem" -e "elb_certificate_key_file=key.pem"
 
+    ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "localaction=createv2"
+
+    ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "listener_name=ansible-listener05" -e "localaction=listenercreatev2"
+
+    ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "listener_name=ansible-listener05" -e "pool_name=ansible-pool05" -e "localaction=poolcreatev2
 
 note: similar with ini, and json conf
 
@@ -114,11 +151,15 @@ Show::
 
     ./grole otc_elb; ansible-playbook roles.yml -e "elb_name=ansible-elb01" -e "localaction=show"
 
+    ./grole otc_elb; ansible-playbook roles.yml -e "elb_name=ansible-elb05" -e "localaction=showv2"
+
     ./grole otc_elb; ansible-playbook roles.yml -e "elb_name=ansible-elb01" -e "localaction=listenershow"
 
 List::
 
     ./grole otc_elb; ansible-playbook roles.yml -e "localaction=list"
+
+    ./grole otc_elb; ansible-playbook roles.yml -e "localaction=listv2"
 
 Delete::
 
@@ -133,3 +174,9 @@ Delete::
     ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb01" -e "listener_name=ansible-listener01" -e "localaction=backenddelete" -e "ecs_name=ansible-test02"
 
     ./grole otc_elb; ansible-playbook roles.yml -e "localaction=certificatedelete" -e "elb_certificate_name=ansible-cert01"
+
+    ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "localaction=deletev2"
+
+    ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "listener_name=ansible-listener05" -e "localaction=listenerdeletev2"
+
+    ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "listener_name=ansible-listener05" -e "pool_name=ansible-pool05" -e "localaction=pooldeletev2
