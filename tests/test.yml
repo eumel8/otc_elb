@@ -35,6 +35,7 @@
     backend_members: "{{ elblistener[listener_name].backend_members | default('') }}"
     # ELB pool vars 
     pool_protocol: "{{ elbpools[pool_name].pool_protocol | default('') }}"
+    pool_port: "{{ elbpools[pool_name].pool_port | default('80') }}"
     pool_lb_algorithm: "{{ elbpools[pool_name].pool_lb_algorithm | default('') }}"
     pool_session_cookie_name: "{{ elbpools[pool_name].pool_session_cookie_name | default('') }}"
     pool_session_persistence_timeout: "{{ elbpools[pool_name].pool_session_persistence_timeout | default('') }}"

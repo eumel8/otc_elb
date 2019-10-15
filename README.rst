@@ -145,6 +145,8 @@ Create::
 
     ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "listener_name=ansible-listener05" -e "pool_name=ansible-pool05" -e "localaction=poolcreatev2
 
+    ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "pool_name=ansible-pool05" -e "localaction=membercreatev2" -e "ecs_name=ansibl-test01"
+
 note: similar with ini, and json conf
 
 Show::
@@ -160,6 +162,8 @@ List::
     ./grole otc_elb; ansible-playbook roles.yml -e "localaction=list"
 
     ./grole otc_elb; ansible-playbook roles.yml -e "localaction=listv2"
+
+    ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "pool_name=ansible-pool05" -e "localaction=membersv2"
 
 Delete::
 
@@ -180,3 +184,5 @@ Delete::
     ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "listener_name=ansible-listener05" -e "localaction=listenerdeletev2"
 
     ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "listener_name=ansible-listener05" -e "pool_name=ansible-pool05" -e "localaction=pooldeletev2
+
+    ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "pool_name=ansible-pool05" -e "localaction=memberdeletev2" -e "ecs_name=ansible-test01"

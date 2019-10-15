@@ -7,3 +7,5 @@ waitfor: False
 
 cascade: True
 http2_enable: False
+admin_state_up: True
+member_weight: 100

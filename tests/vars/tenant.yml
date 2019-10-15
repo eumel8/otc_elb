@@ -37,4 +37,5 @@ elblistener:
 elbpools:
   ansible-pool05:
     pool_protocol: "TCP"
+    pool_port: 80
     pool_lb_algorithm: "ROUND_ROBIN"
