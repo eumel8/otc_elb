@@ -1,0 +1,19 @@
+- name: Send request to API (list elb_healthmonitor)
+  uri:
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/healthmonitors"
+    method: GET
+    body_format: raw
+    return_content: yes
+    follow_redirects: "{{ uri_follow_redirects }}"
+    status_code: 200,201,202,203,204
+    validate_certs: "{{ uri_validate_certs }}"
+    headers:
+      Content-Type: "application/json"
+      X-Auth-Token: "{{ token['x_subject_token'] }}"
+  register: elbmonitor
+  retries: "{{ uri_retries }}"
+  delay: "{{ uri_delay }}"
+  until: elbmonitor.status == 200
+
+- debug:
+    msg: "{{ elbmonitor.json }}"

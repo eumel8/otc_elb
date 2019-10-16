@@ -1,0 +1,27 @@
+{ 
+  "healthmonitor": { 
+    "name": "{{ healthmonitor_name }}",
+    "tenant_id": "{{ PROJECT_ID }}",
+    "pool_id": "{{ pool_id }}",
+    "delay": {{ healthmonitor_delay }},
+    "max_retries": {{ healthmonitor_max_retries }},
+    "timeout": {{ healthmonitor_timeout }},
+    "type": "{{ healthmonitor_type }}",
+{% if healthmonitor_port is defined and healthmonitor_port != 0 %}  
+    "monitor_port": "{{ healthmonitor_port }}",
+{% endif %}  
+{% if healthmonitor_domain_name is defined and healthmonitor_domain_name |length != 0 %}  
+    "domain_name": "{{ healthmonitor_domain_name }}",
+{% endif %}  
+{% if healthmonitor_url_path is defined and healthmonitor_url_path |length != 0 %}  
+    "url_path": "{{ healthmonitor_url_path }}",
+{% endif %}  
+{% if healthmonitor_expected_codes is defined and healthmonitor_expected_codes |length != 0 %}  
+    "expected_codes": "{{ healthmonitor_expected_codes }}",
+{% endif %}  
+{% if healthmonitor_http_method is defined and healthmonitor_http_method |length != 0 %}  
+    "http_method": "{{ healthmonitor_http_method }}",
+{% endif %}  
+    "admin_state_up": "{{ admin_state_up }}"
+  }
+}

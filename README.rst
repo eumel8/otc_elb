@@ -113,6 +113,25 @@ Variables:
 +------------------------------------+---------------------------------------------------------------+
 | healthcheck_uri                    | URI for the health check (HTTP/HTTPS)                         |
 +------------------------------------+---------------------------------------------------------------+
+| healthmonitor_delay                | Health monitor check interval in seconds (V2)                 |
++------------------------------------+---------------------------------------------------------------+
+| healthmonitor_max_retries          | Maximum retries if health monitor mark member as failed (V2)  |
++------------------------------------+---------------------------------------------------------------+
+| healthmonitor_timeout              | Timeout for health monitor check in seconds (V2)              |
++------------------------------------+---------------------------------------------------------------+
+| healthmonitor_type                 | Type of health monitor (TCP, UDP, HTTP) (V2)                  |
++------------------------------------+---------------------------------------------------------------+
+| healthmonitor_port                 | Port of health monitor (1-65535) (V2)                         |
++------------------------------------+---------------------------------------------------------------+
+| healthmonitor_domain_name          | Domain name for HTTP health check (V2)                        |
++------------------------------------+---------------------------------------------------------------+
+| healthmonitor_url_path             | URL for HTTP health check (V2)                                |
++------------------------------------+---------------------------------------------------------------+
+| healthmonitor_expected_code        | Expected return code for HTTP health check (V2)               |
++------------------------------------+---------------------------------------------------------------+
+| healthmonitor_http_method          | HTTP methods for HTTP health check (V2)                       |
+|                                    | GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH  |
++------------------------------------+---------------------------------------------------------------+
 | unhealthy_threshold                | Treshold for unhealthy state                                  |
 +------------------------------------+---------------------------------------------------------------+
 | backend_members                    | Backend member for the ELB Listener                           |
@@ -165,6 +184,8 @@ List::
 
     ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "pool_name=ansible-pool05" -e "localaction=membersv2"
 
+    ./grole otc_elb; ansible-playbook roles.yml -e "localaction=healthmonitorsv2"
+
 Delete::
 
     ./grole otc_elb; ansible-playbook roles.yml -e "elb_name=ansible-elb01" -e "localaction=delete"
@@ -186,3 +207,5 @@ Delete::
     ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "listener_name=ansible-listener05" -e "pool_name=ansible-pool05" -e "localaction=pooldeletev2
 
     ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "pool_name=ansible-pool05" -e "localaction=memberdeletev2" -e "ecs_name=ansible-test01"
+
+    ansible-playbook tenant_yml.yml -e "healthmonitor_name=ansible-healthmonitor05" -e "localaction=healthmonitordeletev2"

@@ -39,3 +39,4 @@ elbpools:
     pool_protocol: "TCP"
     pool_port: 80
     pool_lb_algorithm: "ROUND_ROBIN"
+    healthmonitor_name: "ansible-healthmonitor05"

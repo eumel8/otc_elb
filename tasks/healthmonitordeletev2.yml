@@ -1,0 +1,41 @@
+- name: Send request to API (list elb_healthmonitor)
+  uri:
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/healthmonitors"
+    method: GET
+    body_format: raw
+    return_content: yes
+    follow_redirects: "{{ uri_follow_redirects }}"
+    status_code: 200,201,202,203,204
+    validate_certs: "{{ uri_validate_certs }}"
+    headers:
+      Content-Type: "application/json"
+      X-Auth-Token: "{{ token['x_subject_token'] }}"
+  register: healthmonitor_result
+  retries: "{{ uri_retries }}"
+  delay: "{{ uri_delay }}"
+  until: healthmonitor_result.status == 200
+
+- name: Set fact healthmonitor_id for elb if healthmonitor_name is defined
+  set_fact:
+    healthmonitor_id: "{{ (healthmonitor_result.content|from_json)|json_query(\"healthmonitors[?name=='\" + healthmonitor_name + \"'].id|[0]\") }}"
+  when: healthmonitor_name is defined
+
+- name: Send request to API (delete elb_healthmonitor)
+  uri:
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/healthmonitors/{{ healthmonitor_id }}"
+    method: DELETE
+    return_content: yes
+    status_code: 200,201,202,203,204
+    follow_redirects: "{{ uri_follow_redirects }}"
+    validate_certs: "{{ uri_validate_certs }}"
+    headers:
+      Content-Type: "application/json"
+      X-Auth-Token: "{{ token['x_subject_token'] }}"
+  register: elbhealthmonitor
+  retries: "{{ uri_retries }}"
+  delay: "{{ uri_delay }}"
+  until: elbhealthmonitor.status == 200 or elbhealthmonitor.status == 201 or elbhealthmonitor.status == 203 or elbhealthmonitor.status == 204
+  changed_when: false
+
+- debug:
+    msg: "{{ elbhealthmonitor.json }}"

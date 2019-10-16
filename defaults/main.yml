@@ -9,3 +9,7 @@ cascade: True
 http2_enable: False
 admin_state_up: True
 member_weight: 100
+healthmonitor_delay: 5
+healthmonitor_max_retries: 3
+healthmonitor_timeout: 10
+healthmonitor_type: "TCP"

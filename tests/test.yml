@@ -40,6 +40,16 @@
     pool_session_cookie_name: "{{ elbpools[pool_name].pool_session_cookie_name | default('') }}"
     pool_session_persistence_timeout: "{{ elbpools[pool_name].pool_session_persistence_timeout | default('') }}"
     pool_session_type: "{{ elbpools[pool_name].pool_session_type | default('') }}"
+    healthmonitor_name: "{{ elbpools[pool_name].healthmonitor_name | default('') }}"
+    healthmonitor_delay: "{{ elbpools[pool_name].healthmonitor_delay | default(5) }}"
+    healthmonitor_max_retries: "{{ elbpools[pool_name].healthmonitor_max_retries | default(3) }}"
+    healthmonitor_timeout: "{{ elbpools[pool_name].healthmonitor_timeout | default(10) }}"
+    healthmonitor_type: "{{ elbpools[pool_name].healthmonitor_type | default('TCP') }}"
+    healthmonitor_port: "{{ elbpools[pool_name].healthmonitor_port | default(80) }}"
+    healthmonitor_domain_name: "{{ elbpools[pool_name].healthmonitor_domain_name | default() }}"
+    healthmonitor_url_path: "{{ elbpools[pool_name].healthmonitor_url_path | default() }}"
+    healthmonitor_expected_codes: "{{ elbpools[pool_name].healthmonitor_expected_codes | default() }}"
+    healthmonitor_http_method: "{{ elbpools[pool_name].healthmonitor_http_method | default() }}"
 
   roles:
     - role: "otc_auth"
