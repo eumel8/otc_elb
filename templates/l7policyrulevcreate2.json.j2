@@ -1,0 +1,16 @@
+{ 
+  "l7rule": { 
+    "name": "{{ l7rule_name }}",
+    "tenant_id": "{{ PROJECT_ID }}",
+    "type": "{{ l7rule_type }}",
+    "compare_typ": "{{ l7rule_compare_type }}",
+{% if l7rule_invert is defined and l7rule_invert != 0 %}  
+    "invert": "{{ l7rule_invert }}",
+{% endif %}  
+{% if l7rule_key is defined and l7rule_key|length != 0 %}  
+    "key": "{{ l7rule_key }}",
+{% endif %}  
+    "value": "{{ l7rule_value }}",
+    "admin_state_up": "{{ admin_state_up }}"
+  }
+}

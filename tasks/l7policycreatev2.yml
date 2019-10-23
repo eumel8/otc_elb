@@ -1,0 +1,27 @@
+- name: Get pool_id
+  include: lookupv2.yml
+  when:
+    - pool_name is defined
+
+- name: Send request to API (create elb_l7policy)
+  uri:
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/l7policies"
+    method: POST
+    body_format: raw
+    return_content: yes
+    follow_redirects: "{{ uri_follow_redirects }}"
+    status_code: 200,201,202,203,204
+    validate_certs: "{{ uri_validate_certs }}"
+    headers:
+      Content-Type: "application/json"
+      X-Auth-Token: "{{ token['x_subject_token'] }}"
+    body: "{{ lookup('template', 'l7policycreatev2.json.j2')|to_json }}"
+  register: elbl7policy
+  retries: "{{ uri_retries }}"
+  delay: "{{ uri_delay }}"
+  until: elbl7policy.status == 201
+  when:
+    - pool_id is defined
+
+- debug:
+    msg: "{{ elbl7policy.json }}"

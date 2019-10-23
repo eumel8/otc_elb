@@ -34,6 +34,8 @@ Variables:
 +------------------------------------+---------------------------------------------------------------+
 | localaction="poolcreatev2"         | Create ELB Backend Pool V2                                    |
 +------------------------------------+---------------------------------------------------------------+
+| localaction="l7policycreatev2"     | Create ELB L7 Polixy V2                                       |
++------------------------------------+---------------------------------------------------------------+
 | localaction="healthcheckcreate"    | Create ELB Healthcheck                                        |
 +------------------------------------+---------------------------------------------------------------+
 | localaction="certificatecreate"    | Create ELB Certificate                                        |
@@ -142,6 +144,34 @@ Variables:
 +------------------------------------+---------------------------------------------------------------+
 | http2_enable                       | Enable HTTP2 in TERMINATED_HTTPS (True or False)              |
 +------------------------------------+---------------------------------------------------------------+
+| l7policy_name                      | Name of the ELB L7 policy  (V2)                               |
++------------------------------------+---------------------------------------------------------------+
+| l7policy_position                  | Priority to forward L7 (V2) (1-100) Not used yet              |
++------------------------------------+---------------------------------------------------------------+
+| l7policy_redirect_url              | Redirect URL L7 (V2) Not used yet                             |
++------------------------------------+---------------------------------------------------------------+
+| l7policy_action                    | L7 Policy Action (V2) (REDIRECT_TO_POOL,REDIRECT_TO_LISTENER) |
++------------------------------------+---------------------------------------------------------------+
+| l7redirect_pool_id                 | Pool-ID of L7 Policy Action (V2)                              |
++------------------------------------+---------------------------------------------------------------+
+| l7redirect_listener_id             | Listener-ID of L7 Policy Action (V2)                          |
++------------------------------------+---------------------------------------------------------------+
+| l7rule_name                        | Name of L7 rule (V2)                                          |
++------------------------------------+---------------------------------------------------------------+
+| l7rule_type                        | Type of L7 rule (V2) (HOST_NAME, PATH)                        |
++------------------------------------+---------------------------------------------------------------+
+| l7rule_comparetype                 | Compare Type of L7 rule (V2)                                  |
+|                                    | when type is HOST_NAME: EQUAL_TO                              |
+|                                    | when type is PATH: EQUAL_TO, REGEX,or STARTS_WITH             | 
++------------------------------------+---------------------------------------------------------------+
+| l7rule_invert                      | Reverse match of L7 Rule (V2) (true or false) not used yet    |
++------------------------------------+---------------------------------------------------------------+
+| l7rule_key                         | Key of match content in L7 rule (V2) not used yet             |
++------------------------------------+---------------------------------------------------------------+
+| l7rule_value                       | Value of match content in L7 rule (V2)                        |
+|                                    | when type is HOST_NAME: hostname of the match                 |
+|                                    | when type is PATH: path of the match                          | 
++------------------------------------+---------------------------------------------------------------+
 
 Functions:
 ^^^^^^^^^^
@@ -167,6 +197,7 @@ Create::
     ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "pool_name=ansible-pool05" -e "localaction=membercreatev2" -e "ecs_name=ansibl-test01"
 
 note: similar with ini, and json conf
+
 
 Show::
 
@@ -204,8 +235,17 @@ Delete::
 
     ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "listener_name=ansible-listener05" -e "localaction=listenerdeletev2"
 
-    ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "listener_name=ansible-listener05" -e "pool_name=ansible-pool05" -e "localaction=pooldeletev2
+    ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "listener_name=ansible-listener05" -e "pool_name=ansible-pool05" -e "localaction=pooldeletev2"
 
     ansible-playbook tenant_yml.yml -e "elb_name=ansible-elb05" -e "pool_name=ansible-pool05" -e "localaction=memberdeletev2" -e "ecs_name=ansible-test01"
 
     ansible-playbook tenant_yml.yml -e "healthmonitor_name=ansible-healthmonitor05" -e "localaction=healthmonitordeletev2"
+
+AdHoc::
+
+    ./grole otc_elb; ansible-playbook roles.yml -e "localaction=l7policycreatev2" -e "l7policy_name=ansible-l7policy01" -e "listener_name=ansible-listener05" -e "l7policy_action=REDIRECT_TO_POOL" -e "l7redirect_pool_id=5dd15b59-1802-4bb8-b0b1-4d472c8af051"
+
+    ./grole otc_elb; ansible-playbook roles.yml -e "localaction=l7policycreatev2" -e "l7policy_name=ansible-l7policy01" -e "listener_name=ansible-listener05" -e "l7policy_action=REDIRECT_TO_LISTENER" -e "l7redirect_listener_id=87d15b59-1802-4bb8-b0b1-4d472c8af062"
+
+    ./grole otc_elb; ansible-playbook roles.yml -e "localaction=l7policyrulecreatev2" -e "l7policy_name=ansible-l7policy01" -e "l7rule_name=ansible-l7rule01" -e "l7rule_type=HOSTNAME" -e "l7rule_compare_type=EQUAL_TO" -e "l7rule_value=cloud.telekom.de"
+
