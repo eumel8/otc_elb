@@ -6,7 +6,7 @@
 echo "PRE TASK - generate cert"
 openssl req -new -subj '/CN=example.com/O=My Company Name LTD./C=US' -newkey rsa:2048 -days 365 -nodes -x509 -keyout travis.key -out travis.pem
 echo "SCENARIO 1: create ELB"
-ansible-playbook test.yml -e "elb_name=ansible-elb02 localaction=create waitfor=true" || exit 1
+ansible-playbook test.yml -e "elb_name=ansible-elb02 localaction=create waitfor=false" || exit 1
 echo "SCENARIO 2: create ELB LISTENER"
 ansible-playbook test.yml -e "elb_name=ansible-elb02 listener_name=ansible-listener02 localaction=listenercreate" || exit 1
 echo "SCENARIO 3: create ELB HEALTHCHECK"
@@ -31,6 +31,6 @@ ansible-playbook test.yml -e "elb_name=ansible-elb02 listener_name=ansible-liste
 echo "SCENARIO 12: delete ELB CERT"
 ansible-playbook test.yml -e "elb_certificate_name=ansible-cert01 localaction=certificatedelete"
 echo "SCENARIO 13: delete ELB"
-ansible-playbook test.yml -e "elb_name=ansible-elb02 localaction=delete waitfor=true" || exit 1
+ansible-playbook test.yml -e "elb_name=ansible-elb02 localaction=delete waitfor=false" || exit 1
 echo "POST TASK - delete generated cert files"
 rm -rf travis.*
