@@ -3,7 +3,7 @@
     url: "{{ AUTH_URL_ELBv2 }}/lbaas/healthmonitors"
     method: GET
     body_format: raw
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     status_code: 200,201,202,203,204
     validate_certs: "{{ uri_validate_certs }}"

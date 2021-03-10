@@ -7,7 +7,7 @@
   uri:
     url: "{{ AUTH_URL_ELBv2 }}/lbaas/pools/{{ pool_id }}/members"
     method: GET
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
@@ -29,7 +29,7 @@
   uri:
     url: "{{ AUTH_URL_ELBv2 }}/lbaas/pools/{{ pool_id }}/members/{{ member_id }}"
     method: DELETE
-    return_content: yes
+    return_content: true
     status_code: 200,201,202,203,204
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"

@@ -1,4 +1,5 @@
-- name: Get l7policy_id # has to implement
+# has to implement
+- name: Get l7policy_id
   include: lookupv2.yml
   when:
     - l7policy_name is defined
@@ -8,7 +9,7 @@
     url: "{{ AUTH_URL_ELBv2 }}/l7policies/{l7policy_id}/rules"
     method: POST
     body_format: raw
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     status_code: 200,201,202,203,204
     validate_certs: "{{ uri_validate_certs }}"

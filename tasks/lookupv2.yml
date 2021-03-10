@@ -2,7 +2,7 @@
   uri:
     url: "{{ AUTH_URL_ELBv2 }}/lbaas/loadbalancers"
     method: GET
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
@@ -24,7 +24,7 @@
   uri:
     url: "{{ AUTH_URL_VPC }}/v1/{{ PROJECT_ID }}/vpcs"
     method: GET
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
@@ -46,7 +46,7 @@
   uri:
     url: "{{ AUTH_URL_VPC }}/v1/{{ PROJECT_ID }}/subnets"
     method: GET
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
@@ -71,7 +71,7 @@
   uri:
     url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/certificate"
     method: GET
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
@@ -93,7 +93,7 @@
   uri:
     url: "{{ AUTH_URL_ELBv2 }}/lbaas/listeners"
     method: GET
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
@@ -108,14 +108,13 @@
 - name: Set fact listener_id for elb if listener_name is defined
   set_fact:
     listener_id: "{{ (listener_result.content|from_json)|json_query(\"listeners[?name=='\" + listener_name + \"'].id|[0]\") }}"
-#    listener_id: "{{ (listener_result.content|from_json)|json_query(\"listeners[].loadbalancers[?id=='\" + elb_id + \"'].id[]|[0]\") }}"
   when: listener_name is defined
 
 - name: Send Request to API (list elb pools)
   uri:
     url: "{{ AUTH_URL_ELBv2 }}/lbaas/pools"
     method: GET
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
@@ -136,7 +135,7 @@
 #   uri:
 #     url: "{{ AUTH_URL_ELBv2 }}/lbaas/listeners/{{ listener_id}}"
 #     method: GET
-#     return_content: yes
+#     return_content: true
 #     follow_redirects: "{{ uri_follow_redirects }}"
 #     validate_certs: "{{ uri_validate_certs }}"
 #     headers:
@@ -148,7 +147,7 @@
 #   until: listenerdetail_result.status == 200
 #   changed_when: false
 #   when: listener_id is defined and listener_id|length != 0
-# 
+#
 # - name: Set fact healthcheck_id for elb listener
 #   set_fact:
 #     healthcheck_id: "{{ (listenerdetail_result.content|from_json)|json_query('healthcheck_id') }}"

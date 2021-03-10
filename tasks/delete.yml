@@ -1,11 +1,8 @@
-#- name: Lookup elb_id
-#  include: lookup.yml
-
 - name: Send request to API (delete ELB)
   uri:
     url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/loadbalancers/{{ elb_id }}"
     method: DELETE
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
@@ -24,7 +21,7 @@
   uri:
     url: "{{ AUTH_URL_ECS_CLOUD }}/{{ PROJECT_ID }}/jobs/{{ elb.json.job_id }}"
     method: GET
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
