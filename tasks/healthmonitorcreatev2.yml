@@ -23,5 +23,6 @@
   when:
     - pool_id is defined
 
-- debug:
+- name: elbmonitor
+  debug:
     msg: "{{ elbmonitor.json }}"

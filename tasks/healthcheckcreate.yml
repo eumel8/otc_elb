@@ -24,5 +24,6 @@
     - listener_id is defined and listener_id|length != 0
     - not healthcheck_id or healthcheck_id is undefined
 
-- debug:
+- name: elbhealthcheck
+  debug:
     msg: "{{ elbhealthcheck }}"

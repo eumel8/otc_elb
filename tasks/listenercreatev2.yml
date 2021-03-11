@@ -25,5 +25,6 @@
     - listener_name is defined
     - not listener_id or listener_id is undefined
 
-- debug:
+- name: elblistener
+  debug:
     msg: "{{ elblistner }}"

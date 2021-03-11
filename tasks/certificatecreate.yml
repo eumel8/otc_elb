@@ -29,5 +29,6 @@
   when:
     - not elb_certificate_id or elb_certificate_id is undefined
 
-- debug:
+- name: elbcertificate
+  debug:
     msg: "{{ elbcertificate }}"

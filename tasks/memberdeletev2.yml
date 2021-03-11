@@ -43,5 +43,6 @@
   changed_when: false
   when: ecs_name is defined
 
-- debug:
+- name: elbpool
+  debug:
     msg: "{{ elbpool }}"

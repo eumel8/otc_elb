@@ -26,5 +26,6 @@
     - elb_id is defined
     - listener_id is defined
 
-- debug:
+- name: elbpool
+  debug:
     msg: "{{ elbpool.json }}"

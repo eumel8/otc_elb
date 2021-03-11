@@ -14,5 +14,6 @@
   until: elblist.status == 200
   changed_when: false
 
-- debug:
+- name: elblist
+  debug:
     msg: "{{ elblist }}"

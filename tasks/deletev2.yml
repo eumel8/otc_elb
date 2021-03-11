@@ -18,5 +18,6 @@
   until: elb.status == 204
   changed_when: false
 
-- debug:
+- name: elb
+  debug:
     msg: "{{ elb }}"

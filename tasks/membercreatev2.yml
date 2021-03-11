@@ -70,5 +70,6 @@
     - pool_id is defined
     - subnet_id is defined
 
-- debug:
+- name: elbmember
+  debug:
     msg: "{{ elbmember.json }}"

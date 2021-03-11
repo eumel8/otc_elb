@@ -26,5 +26,6 @@
     - elb_name is defined
     - not elb_id or elb_id is undefined
 
-- debug:
+- name: elb
+  debug:
     msg: "{{ elb }}"

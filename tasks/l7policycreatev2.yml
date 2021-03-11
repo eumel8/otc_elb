@@ -23,5 +23,6 @@
   when:
     - pool_id is defined
 
-- debug:
+- name: elbl7policy
+  debug:
     msg: "{{ elbl7policy.json }}"

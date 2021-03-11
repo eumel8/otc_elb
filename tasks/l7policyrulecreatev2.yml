@@ -24,5 +24,6 @@
   when:
     - l7policy_type is defined
 
-- debug:
+- name: elbl7policyrule
+  debug:
     msg: "{{ elbl7policyrule.json }}"

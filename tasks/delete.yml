@@ -14,7 +14,8 @@
   until: elb.status == 200
   changed_when: false
 
-- debug:
+- name: elb
+  debug:
     msg: "{{ elb }}"
 
 - name: Request job status from API (waiting for SUCCESS)

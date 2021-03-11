@@ -66,5 +66,6 @@
     - listener_id is defined
     - (backend_member_id is defined and backend_member_id|length != 0)
 
-- debug:
+- name: elbbackends
+  debug:
     msg: "{{ elbbackends }}"

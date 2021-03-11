@@ -37,5 +37,6 @@
   until: elbhealthmonitor.status == 200 or elbhealthmonitor.status == 201 or elbhealthmonitor.status == 203 or elbhealthmonitor.status == 204
   changed_when: false
 
-- debug:
+- name: elbhealthmonitor
+  debug:
     msg: "{{ elbhealthmonitor.json }}"

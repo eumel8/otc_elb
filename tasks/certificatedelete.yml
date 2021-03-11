@@ -19,7 +19,8 @@
   changed_when: false
   when: elb_certificate_id is defined and elb_certificate_id|length != 0
 
-- debug:
+- name: elbcertificate
+  debug:
     msg: "{{ elbcertifcate }}"
   when:
     - elbcertifcate is defined

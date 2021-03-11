@@ -18,5 +18,6 @@
   until: members.status == 200 or members.status == 201 or members.status == 203 or members.status == 204
   changed_when: false
 
-- debug:
+- name: members
+  debug:
     msg: "{{ members.json }}"

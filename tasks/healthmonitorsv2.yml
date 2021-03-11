@@ -15,5 +15,6 @@
   delay: "{{ uri_delay }}"
   until: elbmonitor.status == 200
 
-- debug:
+- name: elbmonitor
+  debug:
     msg: "{{ elbmonitor.json }}"

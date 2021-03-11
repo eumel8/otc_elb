@@ -63,6 +63,7 @@
     - "{{ backend_member_id }}"
     - "{{ backend_member_ip }}"
 
-- debug:
+- name: elbbackends
+  debug:
     msg: "{{ elbbackends }}"
   when: elbbackends is defined
