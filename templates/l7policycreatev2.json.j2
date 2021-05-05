@@ -1,0 +1,22 @@
+{ 
+  "l7policy": { 
+    "name": "{{ l7policy_name }}",
+    "tenant_id": "{{ PROJECT_ID }}",
+    "listener_id": "{{ listener_id }}"
+    "description": "Ansible generated resource"
+    "action": "{{ l7policy_action }}",
+{% if l7redirect_pool_id is defined and l7redirect_pool_id  != 0 %}  
+    "redirect_pool_id": "{{ l7redirect_pool_id }}",
+{% endif %}  
+{% if l7redirect_listener_id is defined and l7redirect_listener_id  != 0 %}  
+    "redirect_listener_id": "{{ l7redirect_listener_id }}",
+{% endif %}  
+{% if l7policy_redirect_url is defined and l7policy_redirect_url != 0 %}  
+    "redirect_url": "{{ l7policy_redirect_url }}",
+{% endif %}  
+{% if l7policy_position is defined and l7policy_position != 0 %}  
+    "position": {{ l7policy_position }},
+{% endif %}  
+    "admin_state_up": "{{ admin_state_up }}"
+  }
+}

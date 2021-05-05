@@ -1,6 +1,9 @@
+- name: Lookup listener_id
+  include: lookupv2.yml
+
 - name: Send request to API
   uri:
-    url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/healthcheck/{{ healthcheck_id }}"
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/pools/{{ pool_id }}"
     method: DELETE
     return_content: true
     status_code: 200,201,202,203,204
@@ -9,12 +12,12 @@
     headers:
       Content-Type: "application/json"
       X-Auth-Token: "{{ token['x_subject_token'] }}"
-  register: elbhealthcheck
+  register: elbpool
   retries: "{{ uri_retries }}"
   delay: "{{ uri_delay }}"
-  until: elbhealthcheck.status == 200 or elbhealthcheck.status == 201 or elbhealthcheck.status == 203 or elbhealthcheck.status == 204
+  until: elbpool.status == 200 or elbpool.status == 201 or elbpool.status == 203 or elbpool.status == 204
   changed_when: false
 
-- name: elbhealthcheck
+- name: elbpool
   debug:
-    msg: "{{ elbhealthcheck }}"
+    msg: "{{ elbpool }}"

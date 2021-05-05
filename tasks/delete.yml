@@ -1,11 +1,8 @@
-#- name: Lookup elb_id
-#  include: lookup.yml
-
 - name: Send request to API (delete ELB)
   uri:
     url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/loadbalancers/{{ elb_id }}"
     method: DELETE
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
@@ -17,14 +14,15 @@
   until: elb.status == 200
   changed_when: false
 
-- debug:
+- name: elb
+  debug:
     msg: "{{ elb }}"
 
 - name: Request job status from API (waiting for SUCCESS)
   uri:
     url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/jobs/{{ elb.json.job_id }}"
     method: GET
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:

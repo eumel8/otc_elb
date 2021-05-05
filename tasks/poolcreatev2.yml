@@ -1,29 +1,31 @@
 - name: Get listener_id
-  include: lookup.yml
+  include: lookupv2.yml
   when:
+    - elb_name is defined
     - listener_name is defined
 
-- name: Send request to API (create elb_listener)
+- name: Send request to API (create elb_pool)
   uri:
-    url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/listeners"
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/pools"
     method: POST
     body_format: raw
     return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
+    status_code: 200,201,202,203,204
     validate_certs: "{{ uri_validate_certs }}"
     headers:
       Content-Type: "application/json"
       X-Auth-Token: "{{ token['x_subject_token'] }}"
-    body: "{{ lookup('template', 'listenercreate.json.j2')|to_json }}"
-  register: elblistner
+    body: "{{ lookup('template', 'poolcreatev2.json.j2')|to_json }}"
+  register: elbpool
   retries: "{{ uri_retries }}"
   delay: "{{ uri_delay }}"
-  until: elblistner.status == 200
+  until: elbpool.status == 201
   when:
+    - pool_name is defined
     - elb_id is defined
-    - listener_name is defined
-    - not listener_id or listener_id is undefined
+    - listener_id is defined
 
-- name: elblistener
+- name: elbpool
   debug:
-    msg: "{{ elblistner }}"
+    msg: "{{ elbpool.json }}"

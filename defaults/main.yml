@@ -4,3 +4,12 @@ uri_validate_certs: "yes"
 uri_retries: 5
 uri_delay: 1
 waitfor: False
+
+cascade: True
+http2_enable: False
+admin_state_up: True
+member_weight: 100
+healthmonitor_delay: 5
+healthmonitor_max_retries: 3
+healthmonitor_timeout: 10
+healthmonitor_type: "TCP"

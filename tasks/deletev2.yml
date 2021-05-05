@@ -1,19 +1,23 @@
-- name: Send request to API (list ELB)
+- name: Lookup elb_id
+  include: lookupv2.yml
+
+- name: Send request to API (delete ELB)
   uri:
-    url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/loadbalancers"
-    method: GET
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/loadbalancers/{{ elb_id }}?cascade={{ cascade }}"
+    method: DELETE
     return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
+    status_code: 200,201,202,203,204
     validate_certs: "{{ uri_validate_certs }}"
     headers:
       Content-Type: "application/json"
       X-Auth-Token: "{{ token['x_subject_token'] }}"
-  register: elblist
+  register: elb
   retries: "{{ uri_retries }}"
   delay: "{{ uri_delay }}"
-  until: elblist.status == 200
+  until: elb.status == 204
   changed_when: false
 
-- name: elblist
+- name: elb
   debug:
-    msg: "{{ elblist }}"
+    msg: "{{ elb }}"

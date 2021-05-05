@@ -8,7 +8,7 @@
     url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/healthcheck"
     method: POST
     body_format: raw
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
@@ -24,5 +24,6 @@
     - listener_id is defined and listener_id|length != 0
     - not healthcheck_id or healthcheck_id is undefined
 
-- debug:
+- name: elbhealthcheck
+  debug:
     msg: "{{ elbhealthcheck }}"

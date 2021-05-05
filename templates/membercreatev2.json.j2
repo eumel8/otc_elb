@@ -1,0 +1,11 @@
+{ 
+  "member": { 
+    "name": "{{ ecs_name }}",
+    "tenant_id": "{{ PROJECT_ID }}",
+    "address": "{{ ecs_ipaddress }}",
+    "protocol_port": {{ pool_port }},
+    "subnet_id": "{{ neutron_subnet_id }}",
+    "admin_state_up": "{{ admin_state_up }}",
+    "weight": {{ member_weight }}
+  }
+}

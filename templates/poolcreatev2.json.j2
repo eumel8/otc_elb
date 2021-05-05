@@ -1,0 +1,22 @@
+{ 
+  "pool": { 
+    "name": "{{ pool_name }}",
+    "description": "Ansible generated resource",
+    "tenant_id": "{{ PROJECT_ID }}",
+    "protocol": "{{ pool_protocol }}",
+    "lb_algorithm": "{{ pool_lb_algorithm }}",
+{% if pool_session_persistence is defined and pool_session_persistence|length != 0 %}  
+    "session_persistence": {
+{% if pool_session_cookie_name is defined and pool_session_cookie_name |length != 0 %}  
+      "cookie_name": "{{ pool_session_cookie_name }}",
+{% endif %}  
+{% if pool_session_persistence_timeout is defined and pool_session_persistence_timeout |length != 0 %}  
+      "persistence_timeout": {{ pool_session_persistence_timeout }},
+{% endif %}  
+      "type": "{{ pool_session_type }}"
+    }
+{% endif %}  
+    "loadbalancer_id": "{{ elb_id }}",
+    "listener_id": "{{ listener_id }}"
+  }
+}

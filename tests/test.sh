@@ -34,3 +34,11 @@ echo "SCENARIO 13: delete ELB"
 ansible-playbook test.yml -e "elb_name=ansible-elb02 localaction=delete waitfor=true" || exit 1
 echo "POST TASK - delete generated cert files"
 rm -rf travis.*
+echo "SCENARIO 14: create ELB V2"
+ansible-playbook test.yml -e "elb_name=ansible-elb05 localaction=createv2" || exit 1
+echo "SCENARIO 15: create ELB LISTENER V2"
+ansible-playbook test.yml -e "elb_name=ansible-elb05 listener_name=ansible-listener05 localaction=listenercreatev2" || exit 1
+echo "SCENARIO 16: create ELB POOL V2"
+ansible-playbook test.yml -e "elb_name=ansible-elb05 listener_name=ansible-listener05 pool_name=ansible-pool05 localaction=poolcreatev2" || exit 1
+echo "SCENARIO 17: delete ELB V2 cascade"
+ansible-playbook test.yml -e "elb_name=ansible-elb05 localaction=deletev2 cascade=true" || exit 1

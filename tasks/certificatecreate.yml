@@ -14,7 +14,7 @@
     url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/certificate"
     method: POST
     body_format: raw
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
@@ -29,5 +29,6 @@
   when:
     - not elb_certificate_id or elb_certificate_id is undefined
 
-- debug:
+- name: elbcertificate
+  debug:
     msg: "{{ elbcertificate }}"

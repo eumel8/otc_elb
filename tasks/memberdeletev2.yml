@@ -1,0 +1,48 @@
+- name: Lookup listener_id
+  include: lookupv2.yml
+  when:
+    - pool_name is defined
+
+- name: Send request to API (list members for lookup)
+  uri:
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/pools/{{ pool_id }}/members"
+    method: GET
+    return_content: true
+    follow_redirects: "{{ uri_follow_redirects }}"
+    validate_certs: "{{ uri_validate_certs }}"
+    headers:
+      Content-Type: "application/json"
+      X-Auth-Token: "{{ token['x_subject_token'] }}"
+  register: members_result
+  retries: "{{ uri_retries }}"
+  delay: "{{ uri_delay }}"
+  until: members_result.status == 200
+  changed_when: false
+  when: ecs_name is defined
+
+- name: Set fact member_id for ecs if ecs_name is defined
+  set_fact:
+    member_id: "{{ (members_result.content|from_json)|json_query(\"members[?name=='\" + ecs_name + \"'].id|[0]\") }}"
+  when: ecs_name is defined
+
+- name: Send request to API
+  uri:
+    url: "{{ AUTH_URL_ELBv2 }}/lbaas/pools/{{ pool_id }}/members/{{ member_id }}"
+    method: DELETE
+    return_content: true
+    status_code: 200,201,202,203,204
+    follow_redirects: "{{ uri_follow_redirects }}"
+    validate_certs: "{{ uri_validate_certs }}"
+    headers:
+      Content-Type: "application/json"
+      X-Auth-Token: "{{ token['x_subject_token'] }}"
+  register: elbpool
+  retries: "{{ uri_retries }}"
+  delay: "{{ uri_delay }}"
+  until: elbpool.status == 200 or elbpool.status == 201 or elbpool.status == 203 or elbpool.status == 204
+  changed_when: false
+  when: ecs_name is defined
+
+- name: elbpool
+  debug:
+    msg: "{{ elbpool }}"

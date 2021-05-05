@@ -5,7 +5,7 @@
   uri:
     url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/certificate/{{ elb_certificate_id }}"
     method: DELETE
-    return_content: yes
+    return_content: true
     status_code: 200,201,202,203,204
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
@@ -19,7 +19,8 @@
   changed_when: false
   when: elb_certificate_id is defined and elb_certificate_id|length != 0
 
-- debug:
+- name: elbcertificate
+  debug:
     msg: "{{ elbcertifcate }}"
   when:
     - elbcertifcate is defined

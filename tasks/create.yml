@@ -8,7 +8,7 @@
     url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/elbaas/loadbalancers"
     method: POST
     body_format: raw
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:
@@ -26,14 +26,15 @@
     - elb_name is defined
     - not elb_id or elb_id is undefined
 
-- debug:
+- name: elb
+  debug:
     msg: "{{ elb }}"
 
 - name: Request job status from API (waiting for SUCCESS)
   uri:
     url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/jobs/{{ elb.json.job_id }}"
     method: GET
-    return_content: yes
+    return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
     validate_certs: "{{ uri_validate_certs }}"
     headers:

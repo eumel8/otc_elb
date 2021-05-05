@@ -1,5 +1,6 @@
 skip_list:
   - '106'
   - '204'
-  - '206'
-  - '301'
+  - var-spacing
+  - line-length
+  - no-changed-when
