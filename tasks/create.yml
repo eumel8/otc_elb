@@ -32,7 +32,7 @@
 
 - name: Request job status from API (waiting for SUCCESS)
   uri:
-    url: "{{ AUTH_URL_ECS_CLOUD }}/{{ PROJECT_ID }}/jobs/{{ elb.json.job_id }}"
+    url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/jobs/{{ elb.json.job_id }}"
     method: GET
     return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
