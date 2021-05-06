@@ -24,7 +24,7 @@
     - listener_name is undefined
     - vpc_id is defined
     - elb_name is defined
-    - not elb_id or elb_id is undefined
+    - not elb_id
 
 - name: elb
   debug:
@@ -32,7 +32,7 @@
 
 - name: Request job status from API (waiting for SUCCESS)
   uri:
-    url: "{{ AUTH_URL_ELB }}/{{ PROJECT_ID }}/jobs/{{ elb.json.job_id }}"
+    url: "{{ AUTH_URL_ELBv1 }}/{{ PROJECT_ID }}/jobs/{{ elb.json.job_id }}"
     method: GET
     return_content: true
     follow_redirects: "{{ uri_follow_redirects }}"
